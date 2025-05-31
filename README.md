@@ -19,42 +19,73 @@ Step 6: To add our C# Script file to our selected object, click on the C# Script
 Step 7: Stop.
 
 ## PROGRAM:
-~~~
+# Player
+```
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
-public class Player : MonoBehaviour
+public class player : MonoBehaviour
 {
     public float speed;
     public float jumpforce;
     private Rigidbody2D rb;
-    public Score cc;
+    public CoinManager cc;
     void Start()
     {
-        rb=GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float moveinp=Input.GetAxisRaw("Horizontal");
-        transform.position += new Vector3(moveinp,0,0)*speed*Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space)&&Mathf.Abs(rb.velocity.y)<0.001f)
+        float moveinp = Input.GetAxisRaw("Horizontal");
+        transform.position += new Vector3(moveinp, 0, 0) * speed * Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.001f)
         {
             rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
         }
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(other.CompareTag( "destory"))   //if(other.gameObject.tag=="destory")
+        if (collision.CompareTag("Destroy"))
         {
             cc.coincount++;
-            Destroy(other.gameObject); 
-        }  
+            Destroy(collision.gameObject);
+        }
     }
 }
-~~~
+```
+
+
+# CoinManager
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CoinManager : MonoBehaviour
+{
+    public int coincount;
+    public Text value;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        value.text = coincount.ToString(); 
+    }
+}
+```
+
 
 ## OUTPUT:
 ![output](https://github.com/user-attachments/assets/dfb40acf-8ace-489f-b8a7-4322a6b925e3)
